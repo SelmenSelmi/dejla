@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+    --color-night: #120d08;
+    --color-ember: #eab85c;
+    --color-harvest: #f4cf7b;
+}
+
+:root {
+    --background: #120d08;
+    --foreground: #fff8ea;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--background);
+    color: var(--foreground);
+    scroll-behavior: auto;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: #120d08;
+    color: #fff8ea;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+    background: rgba(244, 207, 123, 0.32);
+    color: #fff8ea;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+canvas {
+    touch-action: pan-y;
+}
+
+.section-copy {
+    will-change: transform, opacity, filter;
+}
+
+.film-grain-line {
+    transform-origin: top;
+    will-change: transform;
+}
+
+.cinematic-noise {
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
