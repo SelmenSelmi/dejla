@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect } from "react";
 import { Section } from "./Section";
+import { LuxurySections } from "./LuxurySections";
 
 const Scene = dynamic(() => import("./Scene").then((module) => module.Scene), {
   ssr: false,
@@ -100,53 +101,56 @@ export function ScrollTimeline() {
   }, []);
 
   return (
-    <main
-      id="scroll-stage"
-      className="relative min-h-[500vh] overflow-clip bg-[#120d08] text-white"
-    >
-      <Scene />
-
-      <header className="fixed left-0 right-0 top-0 z-30 flex items-center justify-between px-5 py-5 md:px-10">
-        <div className="rounded-full border border-white/10 bg-white/[0.06] px-5 py-3 text-xs font-black uppercase tracking-[0.42em] text-amber-100 backdrop-blur-xl">
-          Dejla Estates
-        </div>
-        <a
-          href="#final"
-          className="rounded-full border border-amber-200/25 bg-amber-300/10 px-5 py-3 text-sm font-semibold text-amber-100 backdrop-blur-xl transition hover:bg-amber-200 hover:text-[#120d08]"
-        >
-          Private viewing
-        </a>
-      </header>
-
-      <div className="fixed left-5 top-1/2 z-30 hidden h-56 w-px -translate-y-1/2 overflow-hidden bg-white/10 md:block">
-        <div className="film-grain-line h-full origin-top scale-y-0 bg-gradient-to-b from-amber-200 to-amber-600" />
-      </div>
-
-      <div className="pointer-events-none relative z-10">
-        {sections.map((section, index) => (
-          <Section key={section.eyebrow} index={index} {...section} />
-        ))}
-      </div>
-
-      <section
-        id="final"
-        className="relative z-20 flex min-h-screen items-end px-5 pb-12 md:px-10"
+    <>
+      <main
+        id="scroll-stage"
+        className="relative min-h-[500vh] overflow-clip bg-[#120d08] text-white"
       >
-        <div className="mx-auto grid w-full max-w-7xl gap-6 rounded-[2rem] border border-white/10 bg-white/[0.06] p-5 backdrop-blur-2xl md:grid-cols-[1fr_auto] md:items-center md:p-8">
-          <div>
-            <p className="text-xs uppercase tracking-[0.42em] text-amber-200">
-              Ultra-prime waterfront villa
-            </p>
-            <h3 className="mt-3 text-4xl font-semibold tracking-[-0.06em] md:text-6xl">
-              A scroll-driven architectural presentation built to make a listing
-              unforgettable.
-            </h3>
+        <Scene />
+
+        <header className="fixed left-0 right-0 top-0 z-30 flex items-center justify-between px-5 py-5 md:px-10">
+          <div className="rounded-full border border-white/10 bg-white/[0.06] px-5 py-3 text-xs font-black uppercase tracking-[0.42em] text-amber-100 backdrop-blur-xl">
+            Dejla Estates
           </div>
-          <button className="rounded-full bg-amber-200 px-8 py-4 text-sm font-bold text-[#120d08] transition hover:scale-105 hover:bg-white">
-            Schedule a tour
-          </button>
+          <a
+            href="#final"
+            className="rounded-full border border-amber-200/25 bg-amber-300/10 px-5 py-3 text-sm font-semibold text-amber-100 backdrop-blur-xl transition hover:bg-amber-200 hover:text-[#120d08]"
+          >
+            Private viewing
+          </a>
+        </header>
+
+        <div className="fixed left-5 top-1/2 z-30 hidden h-56 w-px -translate-y-1/2 overflow-hidden bg-white/10 md:block">
+          <div className="film-grain-line h-full origin-top scale-y-0 bg-gradient-to-b from-amber-200 to-amber-600" />
         </div>
-      </section>
-    </main>
+
+        <div className="pointer-events-none relative z-10">
+          {sections.map((section, index) => (
+            <Section key={section.eyebrow} index={index} {...section} />
+          ))}
+        </div>
+
+        <section
+          id="final"
+          className="relative z-20 flex min-h-screen items-end px-5 pb-12 md:px-10"
+        >
+          <div className="mx-auto grid w-full max-w-7xl gap-6 rounded-[2rem] border border-white/10 bg-white/[0.06] p-5 backdrop-blur-2xl md:grid-cols-[1fr_auto] md:items-center md:p-8">
+            <div>
+              <p className="text-xs uppercase tracking-[0.42em] text-amber-200">
+                Ultra-prime waterfront villa
+              </p>
+              <h3 className="mt-3 text-4xl font-semibold tracking-[-0.06em] md:text-6xl">
+                A scroll-driven architectural presentation built to make a
+                listing unforgettable.
+              </h3>
+            </div>
+            <button className="rounded-full bg-amber-200 px-8 py-4 text-sm font-bold text-[#120d08] transition hover:scale-105 hover:bg-white">
+              Schedule a tour
+            </button>
+          </div>
+        </section>
+      </main>
+      <LuxurySections />
+    </>
   );
 }

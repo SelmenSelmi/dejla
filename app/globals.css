@@ -44,6 +44,36 @@ canvas {
     touch-action: pan-y;
 }
 
+@keyframes testimonial-marquee {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+.testimonial-track {
+    animation: testimonial-marquee 42s linear infinite;
+    will-change: transform;
+}
+
+@media (hover: none) {
+    .carousel-viewport {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .testimonial-track {
+        scroll-snap-type: x mandatory;
+        animation-duration: 64s;
+    }
+
+    .testimonial-track > article {
+        scroll-snap-align: center;
+    }
+}
+
 .section-copy {
     will-change: transform, opacity, filter;
 }
