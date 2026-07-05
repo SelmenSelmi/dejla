@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { supabase } from "@/lib/supabaseClient";
 import {
   FaFacebookF,
   FaInstagram,
@@ -86,37 +87,43 @@ const destinations = [
     "🏖",
     "Hammamet",
     "Luxury beaches, serene marinas, and resort living along golden Mediterranean shores.",
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+    "/images/Hammamet.webp",
+    "https://en.wikipedia.org/wiki/Hammamet,_Tunisia",
   ],
   [
     "🏛",
     "Carthage",
     "Ancient Roman ruins, UNESCO heritage, and timeless coastal prestige near Tunis.",
-    "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1200&q=80",
+    "/images/Carthage.webp",
+    "https://en.wikipedia.org/wiki/Carthage",
   ],
   [
     "🌊",
     "Sidi Bou Said",
     "A white-and-blue Mediterranean village filled with galleries, sea views, and charm.",
-    "https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=1200&q=80",
+    "/images/Sidi Bou Said.webp",
+    "https://en.wikipedia.org/wiki/Sidi_Bou_Said",
   ],
   [
     "🏜",
-    "Sahara Desert",
+    "tataouine",
     "Luxury desert camps, cinematic dunes, starlit dinners, and private adventures.",
-    "https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=1200&q=80",
+    "/images/Sahara Desert.webp",
+    "https://en.wikipedia.org/wiki/tataouine",
   ],
   [
     "🕌",
     "Kairouan",
     "Historic Islamic architecture, artisanal heritage, and spiritual depth in every street.",
-    "https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=1200&q=80",
+    "/images/kairoan.webp",
+    "https://en.wikipedia.org/wiki/Kairouan",
   ],
   [
     "🌴",
     "Djerba",
     "Island lifestyle, crystal-clear beaches, boutique retreats, and year-round sunshine.",
-    "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80",
+    "/images/Djerba.webp",
+    "https://en.wikipedia.org/wiki/Djerba",
   ],
 ];
 
@@ -210,20 +217,38 @@ export function LuxurySections() {
 
     try {
       const formData = new FormData(form);
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData,
-      });
-      const result = await response.json();
+      const inquiry = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        inquiry_subject: formData.get("inquiry_subject"),
+        message: formData.get("message"),
+      };
 
-      if (result.success) {
+      const [web3FormsResponse, supabaseResponse] = await Promise.all([
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData,
+        }).then((response) => response.json()),
+        supabase.from("contacts").insert(inquiry),
+      ]);
+
+      if (web3FormsResponse.success && !supabaseResponse.error) {
         setStatus("success");
         form.reset();
         return;
       }
 
+      if (supabaseResponse.error) {
+        console.error(
+          "Supabase contact insert failed:",
+          supabaseResponse.error,
+        );
+      }
+
       setStatus("error");
-    } catch {
+    } catch (error) {
+      console.error("Contact form submission failed:", error);
       setStatus("error");
     }
   };
@@ -427,7 +452,7 @@ export function LuxurySections() {
           </p>
         </div>
         <div className="stagger-wrap mx-auto mt-14 grid max-w-7xl gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {destinations.map(([emoji, title, desc, image]) => (
+          {destinations.map(([emoji, title, desc, image, link]) => (
             <article
               key={title}
               className="stagger-card group relative min-h-[420px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.05] shadow-2xl"
@@ -444,9 +469,14 @@ export function LuxurySections() {
                   {title}
                 </h3>
                 <p className="mt-3 leading-7 text-white/68">{desc}</p>
-                <button className="mt-6 rounded-full border border-amber-200/35 bg-amber-200/10 px-5 py-3 text-sm font-bold text-amber-100 backdrop-blur-xl transition hover:bg-amber-200 hover:text-[#120d08]">
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-6 inline-flex rounded-full border border-amber-200/35 bg-amber-200/10 px-5 py-3 text-sm font-bold text-amber-100 backdrop-blur-xl transition hover:bg-amber-200 hover:text-[#120d08]"
+                >
                   Learn More
-                </button>
+                </a>
               </div>
             </article>
           ))}
